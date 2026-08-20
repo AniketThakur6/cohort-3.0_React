@@ -20,8 +20,6 @@ const Hero = ({ task, setTask }) => {
     e.target[0].value = "";
   };
 
-  console.log(task, "1");
-
   return (
     <div className="pt-4 px-2 flex flex-col min-h-99 overflow-y-auto">
       <form
