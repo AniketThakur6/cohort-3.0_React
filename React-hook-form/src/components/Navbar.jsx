@@ -1,6 +1,6 @@
 import React from "react";
 
-const Navbar = ({setToggle,setIsEdit}) => {
+const Navbar = ({setToggle,toggle,setIsEdit}) => {
 
   return (
     <div className="flex items-center h-20 rounded-lg text-xl justify-between py-3 px-5 bg-zinc-900">
@@ -20,7 +20,7 @@ const Navbar = ({setToggle,setIsEdit}) => {
         <button onClick={()=>{
           setToggle(prev => !prev)
           setIsEdit(null)
-        }} className="py-2 px-6 rounded-xl bg-blue-700">Create +</button>
+        }} className="py-2 px-6 rounded-xl bg-blue-700">{toggle?"View User":"Create +"}</button>
       </div>
     </div>
   );

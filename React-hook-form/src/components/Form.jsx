@@ -1,8 +1,9 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { nanoid } from 'nanoid'
 
 const Form = ({ setToggle, users, setUsers, setIsEdit, isEdit }) => {
-  console.log("update");
+
 
   const {
     register,
@@ -11,7 +12,7 @@ const Form = ({ setToggle, users, setUsers, setIsEdit, isEdit }) => {
     formState: { errors },
   } = useForm({
     mode: "onChange",
-    defaultValues: users[isEdit] || {
+    defaultValues: isEdit || {
       name: "",
       email: "",
       mobile: "",
@@ -21,12 +22,14 @@ const Form = ({ setToggle, users, setUsers, setIsEdit, isEdit }) => {
 
   const formSubmit = (data) => {
     if (isEdit !== null) {
-      setUsers((currentUser) =>
-        currentUser.map((user, index) => (index === isEdit ? data : user)),
-      );
+     let updateUser = users.map((user) => ( user.id === isEdit.id ? data : user))
+      setUsers(updateUser)
+      localStorage.setItem("users",JSON.stringify(updateUser))
       setIsEdit(null);
     } else {
-      setUsers((currentUsers) => [...currentUsers, data]);
+      let addusers = [...users, {...data, id: nanoid()}]
+      setUsers(addusers);
+      localStorage.setItem("users",JSON.stringify(addusers))
     }
     reset();
     setToggle((prev) => !prev);

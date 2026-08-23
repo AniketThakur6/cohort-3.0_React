@@ -1,15 +1,10 @@
 import React from 'react'
 
-const Usercard = ({ user,users, setUsers,index,setToggle,setIsEdit }) => {
+const Usercard = ({ user,deleteUser,setToggle,setIsEdit }) => {
 
-
-  const deleteUser = (index)=>{
-    console.log("delete")
-    setUsers(users.filter((_,idx) => idx !== index ))
-  }
-
-   const updateUser = (index) => {
-    setIsEdit(index);
+   const updateUser = (user) => {
+    setIsEdit(user);
+    console.log("updated")
     setToggle(prev => !prev)
    }
 
@@ -23,10 +18,10 @@ const Usercard = ({ user,users, setUsers,index,setToggle,setIsEdit }) => {
       </div>
       <div className='flex justify-between mb-2'> 
         <button onClick={()=>{
-          updateUser(index)
+          updateUser(user)
         }} className='py-2 px-4 bg-yellow-600 rounded-lg'>Update</button>
         <button onClick={()=>{
-          deleteUser(index)
+          deleteUser(user.id)
         }} className='py-2 px-4 bg-red-600 rounded-lg'>Delete</button>
       </div>
     </div>
