@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+@theme {
+  --color-main-color: #C8F400;
+   --inset-shadow-md: 0 3px 10px #434e15;
+};
+
+::-webkit-scrollbar {
+  display: none;
+  color: #434e15;
+}
