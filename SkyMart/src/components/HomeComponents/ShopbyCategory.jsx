@@ -10,7 +10,7 @@ const ShopbyCategory = () => {
   );
 
   return (
-    <div className=" w-7xl px-3 py-6">
+    <div className="w-full max-w-7xl px-4 py-6 sm:px-6">
       {/* Header */}
       <div className="mb-5 flex items-center justify-between">
         <h2 className="text-2xl font-semibold text-white">Shop by Category</h2>
@@ -26,7 +26,7 @@ const ShopbyCategory = () => {
 
       {/* Categories */}
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {Object.entries(obj).map((category, count) => {
+        {Object.entries(obj).map((category) => {
           return <ShopbyCategoryCard key={category[1]} category={category} />;
         })}
       </div>

@@ -46,9 +46,9 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0d0d0d] text-white flex flex-col items-center">
+    <div className="min-h-screen bg-[#0d0d0d] px-4 pb-8 text-white flex flex-col items-center sm:px-6">
       {/* Logo */}
-      <div className="flex items-center gap-3 mt-35">
+      <div className="mt-12 flex items-center gap-3 sm:mt-24 lg:mt-35">
         <div className="w-9 h-9 rounded-xl bg-main-color flex items-center justify-center">
           <Zap size={20} className="text-black" fill="currentColor" />
         </div>
@@ -59,7 +59,7 @@ const SignupPage = () => {
       </div>
 
       {/* Signup Card */}
-      <div className="w-120 border text-xl border-[#292929] bg-[#111111] rounded-3xl p-8 mt-8">
+      <div className="mt-8 w-full max-w-120 rounded-3xl border border-[#292929] bg-[#111111] p-5 text-base sm:p-8 sm:text-xl">
         <h2 className="text-2xl font-bold">Create account</h2>
 
         <p className="text-gray-500 mt-2">Join SkyMart and start shopping</p>

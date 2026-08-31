@@ -25,7 +25,7 @@ const Cart = () => {
       {/* Cart Drawer */}
       <div
         onClick={(e) => e.stopPropagation()}
-        className="absolute right-0 top-0 flex h-full w-120 flex-col border-l border-[#292929] bg-[#111111]"
+        className="absolute right-0 top-0 flex h-full w-full max-w-120 flex-col border-l border-[#292929] bg-[#111111] sm:w-[30rem]"
       >
         {/* Header */}
         <div className="flex h-30 items-center justify-between border-b border-gray-500 px-6">

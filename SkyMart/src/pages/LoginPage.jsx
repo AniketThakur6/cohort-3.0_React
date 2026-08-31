@@ -1,13 +1,14 @@
 import { Mail, Lock, ArrowRight, Zap, Eye, EyeClosed } from "lucide-react";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { MyContext } from "../context/MyContext";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
-const [success, setSuccess] = useState(true)
+  const [success, setSuccess] = useState(true);
 
+  const { currentUser } = useContext(MyContext)
 
   const {
     register,
@@ -29,18 +30,23 @@ const [success, setSuccess] = useState(true)
     };
 
     const result = signinUser(obj);
-    setSuccess(result);
-
     if (result) {
       reset();
-      navigate("/home",{ replace: true })
+      navigate("/home", { replace: true });
     }
+    setSuccess(result);
   };
 
+  useEffect(() => {
+    if (currentUser && Object.keys(currentUser).length) {
+      navigate("/home", { replace: true });
+    }
+  }, [currentUser, navigate]);
+
   return (
-    <div className="h-screen min-h-180 overflow-hidden bg-[#0d0d0d] text-white flex">
+    <div className="min-h-screen bg-[#0d0d0d] text-white lg:flex">
       {/* Left Section */}
-      <div className="w-1/2 px-12.5 py-13 flex flex-col bg-[radial-gradient(circle_at_35%_48%,rgba(55,65,15,0.14),transparent_46%)]">
+      <div className="hidden w-1/2 flex-col bg-[radial-gradient(circle_at_35%_48%,rgba(55,65,15,0.14),transparent_46%)] px-12.5 py-13 lg:flex">
         {/* Logo */}
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-main-colorr flex items-center justify-center">
@@ -91,8 +97,16 @@ const [success, setSuccess] = useState(true)
       </div>
 
       {/* Right Section */}
-      <div className="w-1/2 border-l border-[#666] flex   items-center justify-center">
-        <div className="w-120 border border-[#242424] bg-[#1111] rounded-3xl p-8 shadow-[0_20px_40px_rgba(0,0,0,0.18)]">
+      <div className="flex min-h-screen w-full items-center justify-center px-4 py-8 lg:w-1/2 lg:border-l lg:border-[#666]">
+        <div className="w-full max-w-120 rounded-3xl border border-[#242424] bg-[#1111] p-5 shadow-[0_20px_40px_rgba(0,0,0,0.18)] sm:p-8">
+          <div className="mb-8 flex items-center gap-3 lg:hidden">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-main-color">
+              <Zap size={22} className="text-black" fill="currentColor" />
+            </div>
+            <h1 className="text-2xl font-bold">
+              Sky<span className="text-main-color">Mart</span>
+            </h1>
+          </div>
           <h2 className="text-3xl font-bold">Sign in</h2>
 
           <p className="text-gray-500 mt-2">
@@ -113,8 +127,9 @@ const [success, setSuccess] = useState(true)
               <input
                 {...register("email", {
                   required: "Email is required",
+                  onChange: () => setSuccess(true)
                 })}
-                onChange={() => setSuccess(true)}
+                
                 type="email"
                 placeholder="Email address"
                 className="w-full h-12 bg-transparent outline-none text-white placeholder:text-gray-500"
@@ -128,8 +143,9 @@ const [success, setSuccess] = useState(true)
               <input
                 {...register("password", {
                   required: "Password is required",
+                  onChange: () => setSuccess(true),
                 })}
-                onChange={() => setSuccess(true)}
+                
                 type={showPassword ? "text" : "password"}
                 placeholder="Password (min 6 chars)"
                 className="w-full h-12 bg-transparent outline-none text-white placeholder:text-gray-500"

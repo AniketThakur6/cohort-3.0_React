@@ -1,14 +1,16 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { NavLink } from "react-router";
 import { MyContext } from "../context/MyContext";
-import { LogOut, Zap } from "lucide-react";
+import { LogOut, Menu, X, Zap } from "lucide-react";
 
 const Navbar = () => {
   const { cartItems, setToggleCart, currentUser, logoutUser } =
     useContext(MyContext);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="sticky z-20 top-0 backdrop-blur-sm bg-[#000000cc] h-20 border border-[#292929] px-36 flex items-center justify-between">
+    <nav className="sticky top-0 z-20 border-b border-[#292929] bg-[#090909ee] backdrop-blur-sm">
+      <div className="relative mx-auto flex min-h-16 max-w-319 items-center justify-between px-4 py-2 sm:px-6 lg:h-16 lg:px-0">
       {/* Logo */}
       <div className="flex items-center gap-2">
         <div className="w-9 h-9 rounded-xl bg-main-color flex items-center justify-center text-black font-bold">
@@ -27,7 +29,7 @@ const Navbar = () => {
       </div>
 
       {/* Navigation */}
-      <div className="flex items-center text-xl gap-7">
+      <div className="hidden items-center justify-center gap-7 text-lg lg:flex">
         <NavLink
           to={"/home"}
           className={({ isActive }) =>
@@ -61,14 +63,14 @@ const Navbar = () => {
       </div>
 
       {/* Right Section */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 sm:gap-3">
         {/* User */}
-        <div className="h-11 px-2 rounded-xl bg-zinc-800 border border-[#292929] flex items-center justify-between gap-2">
+        <div className="hidden h-10 items-center justify-between gap-2 rounded-xl border border-[#292929] bg-zinc-900 px-2 min-[400px]:flex">
           <div className="w-7 h-7 capitalize rounded-md bg-main-color text-black flex items-center justify-center font-bold text-sm">
             {currentUser.avatar}
           </div>
 
-          <span className="text-gray-300 text-lg">{ currentUser.name?.charAt(0).toUpperCase() + currentUser.name?.slice(1) }</span>
+          <span className="pr-1 text-sm font-medium text-gray-300">{ currentUser.name?.charAt(0).toUpperCase() + currentUser.name?.slice(1) }</span>
         </div>
 
         {/* Cart */}
@@ -107,6 +109,42 @@ const Navbar = () => {
         hover:text-[#ec2a2ac7] hover:border-[#ec2a2ac7] transition duration-300 ease-in-out">
           <LogOut size={20} className="" />
         </button>
+
+        <button
+          onClick={() => setMobileMenuOpen((open) => !open)}
+          className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#292929] text-gray-300 lg:hidden"
+          aria-label="Toggle navigation menu"
+          aria-expanded={mobileMenuOpen}
+        >
+          {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
+      </div>
+      {mobileMenuOpen && (
+        <div className="absolute left-4 right-4 top-[calc(100%+0.35rem)] flex flex-col rounded-2xl border border-[#292929] bg-[#111111] p-2 shadow-2xl lg:hidden">
+          <div className="mx-2 mb-2 flex h-10 items-center gap-2 rounded-xl border border-[#292929] bg-zinc-900 px-2 min-[400px]:hidden">
+            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-main-color text-sm font-bold text-black">
+              {currentUser.avatar}
+            </div>
+            <span className="text-sm font-medium text-gray-300">
+              {currentUser.name?.charAt(0).toUpperCase() + currentUser.name?.slice(1)}
+            </span>
+          </div>
+          {[
+            ["/home", "Home"],
+            ["/products", "Shop"],
+            ["/about", "About"],
+          ].map(([to, label]) => (
+            <NavLink
+              key={to}
+              to={to}
+              onClick={() => setMobileMenuOpen(false)}
+              className={({ isActive }) => `rounded-xl px-4 py-3 text-base font-semibold ${isActive ? "bg-lime-950/50 text-main-color" : "text-gray-400 hover:bg-zinc-800 hover:text-white"}`}
+            >
+              {label}
+            </NavLink>
+          ))}
+        </div>
+      )}
       </div>
     </nav>
   );

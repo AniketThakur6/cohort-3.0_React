@@ -1,20 +1,27 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Box, TrendingUp, Star, Tag } from "lucide-react";
 import WelcomeBanner from "./../components/WelcomeBanner";
 import PageFooter from "../components/PageFooter";
 import ShopbyCategory from "../components/HomeComponents/ShopbyCategory";
 import TopProductCard from "../components/HomeComponents/TopProductCard";
 import { MyContext } from "../context/MyContext";
+import { useLocation } from "react-router";
 
 const HomePage = () => {
-  const { toShop,productsData,cartItems } = useContext(MyContext);
+  const { toShop, productsData, cartItems } = useContext(MyContext);
+
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   return (
     <div className="flex flex-col gap-10 w-full items-center">
-      <div>
+      <div className="w-full px-4 sm:px-6">
         <WelcomeBanner />
       </div>
-      <div className="grid grid-cols-1 gap-4 px-6 sm:grid-cols-2 lg:grid-cols-4 w-7xl">
+      <div className="grid w-full max-w-7xl grid-cols-1 gap-4 px-4 sm:grid-cols-2 sm:px-6 lg:grid-cols-4">
         {/* Cart Items */}
         <div className="flex h-30 items-center gap-4 rounded-[22px] border border-gray-500 bg-[#101010] px-6">
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-lime-950/60 text-main-color">
@@ -23,7 +30,7 @@ const HomePage = () => {
 
           <div className="flex flex-col">
             <span className="text-[20px] font-semibold leading-6 text-white">
-              {cartItems.reduce((total,item)=> total + item.quantity,0)}
+              {cartItems.reduce((total, item) => total + item.quantity, 0)}
             </span>
             <span className="mt-1 text-[15px] font-medium text-gray-400">
               Cart Items
@@ -40,7 +47,10 @@ const HomePage = () => {
 
           <div className="flex flex-col">
             <span className="text-[20px] font-semibold leading-6 text-white">
-              ${(cartItems.reduce((total,item)=> total + item.price*item.quantity,0)).toFixed(2) || "0"}
+              $
+              {cartItems
+                .reduce((total, item) => total + item.price * item.quantity, 0)
+                .toFixed(2) || "0"}
             </span>
             <span className="mt-1 text-[15px] font-medium text-gray-400">
               Cart Value
@@ -86,9 +96,9 @@ const HomePage = () => {
 
       <ShopbyCategory />
 
-      <div className="flex w-7xl gap-10 bg-[#0b0b0b]">
+      <div className="flex w-full max-w-7xl flex-col gap-6 px-4 sm:px-6 lg:flex-row lg:gap-10">
         {/* Top Rated */}
-        <div className="w-full max-w-150  rounded-3xl border border-zinc-400 bg-[#121212] p-6">
+        <div className="w-full rounded-3xl border border-zinc-400 bg-[#121212] p-4 sm:p-6">
           {/* Header */}
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -109,14 +119,14 @@ const HomePage = () => {
 
           {/* Product Card */}
           <div className="w-full h-full flex flex-col gap-2">
-            {productsData.slice(0,5).map(product => 
+            {productsData.slice(0, 5).map((product) => (
               <TopProductCard key={product.id} product={product} />
-            )}
+            ))}
           </div>
         </div>
 
         {/* Top Rated */}
-        <div className="w-full max-w-150 rounded-3xl border border-zinc-400 bg-[#121212] p-6">
+        <div className="w-full rounded-3xl border border-zinc-400 bg-[#121212] p-4 sm:p-6">
           {/* Header */}
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -137,14 +147,14 @@ const HomePage = () => {
 
           {/* Product Card */}
           <div className="w-full h-full flex flex-col gap-2">
-            {productsData.slice(10,15).map(product => 
+            {productsData.slice(10, 15).map((product) => (
               <TopProductCard key={product.id} product={product} />
-            )}
+            ))}
           </div>
         </div>
       </div>
 
-      <div className="grid w-7xl grid-cols-1 gap-4 bg-[#0b0b0b]  px-2 py-4 md:grid-cols-3">
+      <div className="grid w-full max-w-7xl grid-cols-1 gap-4 bg-[#0b0b0b] px-4 py-4 sm:px-6 md:grid-cols-3">
         {/* Fast Delivery */}
         <div className="flex h-19.5 items-center gap-4 rounded-2xl border border-zinc-400 bg-[#101010] px-6">
           <div className="text-3xl text-main-color">⚡</div>

@@ -12,9 +12,9 @@ import {
   Star,
   Truck,
 } from "lucide-react";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MyContext } from "../context/MyContext";
-import { useNavigate, useParams } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import PageFooter from "./PageFooter";
 import ProductCard from "./ProductCard";
 
@@ -68,6 +68,10 @@ export default function ProductDetails() {
 
   const product = productsData.find((item) => String(item.id) === id);
 
+  if (!product) {
+  return <p className="p-8 text-white">Product not found</p>;
+}
+
   const item = cartItems.find((elem) => elem.id === product.id);
 
   if (!product) {
@@ -80,9 +84,15 @@ export default function ProductDetails() {
     );
   };
 
+  const {pathname } = useLocation();
+
+  useEffect(()=>{
+    window.scrollTo(0,0)
+  },[pathname])
+
   return (
     <div className="flex w-full flex-col gap-12  bg-black">
-      <div className="min-h-screen bg-black px-40 py-5 text-white">
+      <div className="min-h-screen bg-black px-4 py-5 text-white sm:px-6 lg:px-12 xl:px-24">
         {/* Breadcrumb */}
         <div className="mb-8 mt-8 flex items-center gap-2 text-lg text-gray-500">
           <span
@@ -100,7 +110,7 @@ export default function ProductDetails() {
         {/* Main Content */}
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
           {/* Product Image */}
-          <div className="flex h-128 items-center justify-center rounded-3xl bg-white p-10">
+          <div className="flex h-80 items-center justify-center rounded-3xl bg-white p-6 sm:h-112 sm:p-10 lg:h-128">
             <img
               src={product.image}
               alt={product.title}
@@ -208,7 +218,7 @@ export default function ProductDetails() {
               ""
             )}
             {/* Features */}
-            <div className="flex gap-3">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
               <FeatureCard
                 icon={Truck}
                 title="Free Delivery"
@@ -258,8 +268,8 @@ export default function ProductDetails() {
         </div>
 
         <div className="my-12 flex flex-col w-full">
-          <h1 className="text-4xl">Related Products</h1>
-          <div className="grid grid-cols-5 gap-4 w-full">
+          <h1 className="text-3xl sm:text-4xl">Related Products</h1>
+          <div className="grid w-full grid-cols-1 mt-10 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {productsData
               .filter((elem) => elem.category === `${product.category}`)
               .slice(0, 5)

@@ -1017,28 +1017,27 @@ export const ContextProvider = ({ children }) => {
 
   const signinUser = (user) => {
     let loginUser = userData.find(
-      (prev) =>
-        (prev.email === user.email && prev.password === user.password) || false,
+      (prev) => prev.email === user.email && prev.password === user.password,
     );
 
-    if (loginUser) {
-      console.log("loggedin")
-      setCurrentUser(loginUser || {});
-      saveLocal("sm_user", loginUser);
-      showNotification("Login Successfull");
-      return true;
+    if (!loginUser) {
+      showNotification(
+        "User with this email don't exists!, please create new Account",
+      );
+      return false;
     }
 
-    showNotification(
-      "User with this email don't exists!, please create new Account",
-    );
-    return false;
+    setCurrentUser(loginUser || {});
+    saveLocal("sm_user", loginUser);
+    showNotification("Login Successfull");
+    return true;
   };
 
-  const logoutUser = ()=>{
-    showNotification("Logged out. See you soon! 👋")
-    setCurrentUser({})
-  }
+  const logoutUser = () => {
+    showNotification("Logged out. See you soon! 👋");
+    setCurrentUser({});
+    saveLocal("sm_user", {});
+  };
 
   return (
     <MyContext.Provider

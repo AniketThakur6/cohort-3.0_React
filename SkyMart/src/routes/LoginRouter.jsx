@@ -40,7 +40,7 @@ const LoginRouter = () => {
 
       {showMessage && (
         <div
-          className="fixed w-fit bottom-8 right-12 z-50 bg-[#181818] border border-[#292929] 
+            className="fixed bottom-4 right-4 z-50 max-w-[calc(100vw-2rem)] border border-[#292929] bg-[#181818] sm:bottom-8 sm:right-12
                   rounded-xl px-4 py-3 text-white flex items-center gap-2"
         >
           <span

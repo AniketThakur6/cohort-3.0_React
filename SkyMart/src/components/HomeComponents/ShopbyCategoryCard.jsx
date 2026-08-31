@@ -11,7 +11,7 @@ const ShopbyCategoryCard = ({category}) => {
         featured:""
       })
       toShop();
-    }} className="flex h-32.5 w-75 flex-col items-center justify-center rounded-2xl border border-[#2a2a2a] bg-[#121212]">
+    }} className="flex h-32.5 w-full flex-col items-center justify-center rounded-2xl border border-[#2a2a2a] bg-[#121212]">
       <div className="mb-3 text-3xl"></div>
 
     <h3 className="text-2xl mb-1 font-medium text-main-color">Category</h3>
