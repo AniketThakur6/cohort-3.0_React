@@ -8,7 +8,6 @@ const SearchFilters = () => {
   const handleChange = (e) => {
     let { name, value } = e.target;
     setFilterValue({ ...filterValue, [name]: value });
-    console.log(filterValue);
   };
 
   const clear = (key) => {

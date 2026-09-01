@@ -4,7 +4,7 @@ import { Navigate, Outlet } from 'react-router'
 const ProtectedRoute = ({isAdmin}) => {
 
   if(!isAdmin){
-    return <Navigate to='/login' replace />
+    return <Navigate to='/' replace/>
   }
   return <Outlet />
 }

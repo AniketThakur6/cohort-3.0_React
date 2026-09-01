@@ -24,7 +24,7 @@ const ShopPage = () => {
         featured: "",
       });
     };
-  }, [setFilterValue]);
+  }, []);
 
   const filteredProducts = productsData
     .filter((product) => {
