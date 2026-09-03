@@ -4,7 +4,8 @@ import { useAuth } from "../hooks/useAuth";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const { handleSubmit, loginFormSubmit, register, errors, navigate } =
+
+  const { navigate, handleSubmit, register, errors, loginFormSubmit } =
     useAuth();
 
   return (
@@ -35,7 +36,7 @@ const LoginPage = () => {
               </label>
               <input
                 {...register("email", {
-                  required: "Email is required",
+                  required: "email is required",
                 })}
                 id="login-email"
                 type="email"
@@ -43,7 +44,7 @@ const LoginPage = () => {
                 className="w-full rounded-xl border border-slate-700 bg-slate-950/70 px-4 py-3 text-white outline-none placeholder:text-slate-500 transition focus:border-cyan-400 focus:ring-4 focus:ring-cyan-400/10"
               />
               {errors.email && (
-                <p className="text-red-500 text-sm">{errors.email.message}</p>
+                <p className="text-sm text-red-600">{errors.email.message}</p>
               )}
             </div>
             <div>
@@ -59,7 +60,7 @@ const LoginPage = () => {
                     required: "password is required",
                     minLength: {
                       value: 6,
-                      message: "Minimum 6 charaters is required",
+                      message: "Minimum 6 charatersis required",
                     },
                   })}
                   id="register-password"
@@ -75,7 +76,7 @@ const LoginPage = () => {
                 </div>
               </div>
               {errors.password && (
-                <p className="text-red-500 text-sm">
+                <p className="text-sm text-red-600">
                   {errors.password.message}
                 </p>
               )}
@@ -88,7 +89,7 @@ const LoginPage = () => {
             </button>
           </form>
           <p className="mt-7 text-center text-sm text-slate-400">
-            New here?{" "}
+            New here?
             <span
               onClick={() => navigate("/register")}
               className="font-semibold text-cyan-400 cursor-pointer "
