@@ -1,7 +1,9 @@
 import { Search, X, ChevronDown } from "lucide-react";
-import { useProducts } from "../hooks/useProduct";
+import { productCategories } from "../../hooks/useProductHook";
 
-const SearchFilters = ({ handleChange, clear, clearAll, filterValue }) => {
+const SearchFilters = ({ search, setSearch,categories,setCategories }) => {
+  const { data , isPending, error } = productCategories();
+
   return (
     <div className="w-full rounded-2xl border border-gray-500 bg-[#111111] p-4">
       {/* Top Controls */}
@@ -11,18 +13,18 @@ const SearchFilters = ({ handleChange, clear, clearAll, filterValue }) => {
           <Search size={18} className="text-gray-500" />
 
           <input
-            onChange={handleChange}
+            onChange={(e) => setSearch(e.target.value)}
             name="search"
-            value={filterValue.search}
+            value={search}
             type="text"
             placeholder="Search products..."
             className="ml-3 w-full bg-transparent text-sm text-white outline-none placeholder:text-gray-500"
           />
 
-          {filterValue.search ? (
+          {search ? (
             <X
               size={16}
-              onClick={() => clear("search")}
+              onClick={() => setSearch("")}
               className="cursor-pointer text-gray-500"
             />
           ) : (
@@ -31,47 +33,29 @@ const SearchFilters = ({ handleChange, clear, clearAll, filterValue }) => {
         </div>
 
         {/* Category */}
-        <div className="relative flex w-full items-center rounded-xl border border-zinc-700 bg-[#202020] px-4 py-2.5 text-sm text-gray-200 outline-none focus-within:border-main-color sm:w-48">
+        <div className="relative flex w-full items-center rounded-xl border border-zinc-700 bg-[#202020] px-4 py-2.5 text-sm text-gray-200 outline-none focus-within:border-main-color sm:w-60">
           <select
-            onChange={handleChange}
+            onChange={(e)=> setCategories(e.target.value)}
+            value={categories}
             name="category"
-            value={filterValue.category}
             className="w-full appearance-none bg-[#202020] pl-2 text-white outline-none"
           >
             <option
               value=""
-              className="bg-[#202020] text-white checked:bg-main-color checked:text-black"
+              className="bg-[#202020] text-white checked:text-blue-500"
             >
               All Categories
             </option>
 
-            <option
-              value="beauty"
-              className="bg-[#202020] text-white checked:bg-main-color checked:text-black"
-            >
-              beauty
-            </option>
-
-            <option
-              value="fragrances"
-              className="bg-[#202020] text-white checked:bg-main-color checked:text-black"
-            >
-              fragrances
-            </option>
-
-            <option
-              value="furniture"
-              className="bg-[#202020] text-white checked:bg-main-color checked:text-black"
-            >
-              Furniture
-            </option>
-
-            <option
-              value="groceries"
-              className="bg-[#202020] text-white checked:bg-main-color checked:text-black"
-            >
-              groceries
-            </option>
+            {data?.map((item) => (
+              <option
+                key={item.slug}
+                value={item.slug}
+                className="bg-[#202020] text-white checked:text-blue-500"
+              >
+                {item.name}
+              </option>
+            ))}
           </select>
 
           <ChevronDown
@@ -81,11 +65,9 @@ const SearchFilters = ({ handleChange, clear, clearAll, filterValue }) => {
         </div>
 
         {/* Featured */}
-        <div className="relative flex h-11 text-lg w-full items-center justify-center rounded-xl border border-zinc-700 bg-[#202020] px-4 py-2.5 focus-within:border-main-color sm:w-48">
+        {/* <div className="relative flex h-11 text-lg w-full items-center justify-center rounded-xl border border-zinc-700 bg-[#202020] px-4 py-2.5 focus-within:border-main-color sm:w-48">
           <select
-            onChange={handleChange}
             name="featured"
-            value={filterValue.featured}
             className="w-full appearance-none bg-[#202020] pl-2 text-white outline-none"
           >
             <option
@@ -124,12 +106,15 @@ const SearchFilters = ({ handleChange, clear, clearAll, filterValue }) => {
             size={16}
             className="pointer-events-none absolute right-4 text-gray-400"
           />
-        </div>
+        </div> */}
 
         {/* Clear */}
-        {filterValue.search || filterValue.category || filterValue.featured ? (
+        {search || categories ? (
           <button
-            onClick={clearAll}
+            onClick={()=>{
+              setCategories("")
+              setSearch("")
+            }}
             className="flex items-center gap-2 rounded-xl border border-red-900/50 bg-red-950/30 px-5 py-2.5 text-sm text-red-400"
           >
             <X size={16} />
@@ -143,7 +128,7 @@ const SearchFilters = ({ handleChange, clear, clearAll, filterValue }) => {
       {/* Divider */}
 
       {/* Search Tag */}
-      {filterValue.search || filterValue.category || filterValue.featured ? (
+      {/* {filterValue.search || filterValue.category || filterValue.featured ? (
         <div className="flex w-full flex-col">
           <div className="my-3 border-t border-gray-500" />
           <div className="flex flex-wrap gap-2">
@@ -164,7 +149,7 @@ const SearchFilters = ({ handleChange, clear, clearAll, filterValue }) => {
         </div>
       ) : (
         ""
-      )}
+      )} */}
     </div>
   );
 };

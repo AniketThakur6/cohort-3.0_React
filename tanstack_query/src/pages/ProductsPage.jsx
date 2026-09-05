@@ -14,8 +14,6 @@ const ProductsPage = () => {
     filterValue,
   } = useProducts();
 
-  console.log("page if redndering");
-
   if (error) {
     return <h1> {error} </h1>;
   }

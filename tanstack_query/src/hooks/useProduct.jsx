@@ -9,8 +9,6 @@ export const useProducts = () => {
     staleTime: 5000,
   });
 
-  console.log(data);
-
   const [filterValue, setFilterValue] = useState({
     search: "",
     category: "",
@@ -18,13 +16,11 @@ export const useProducts = () => {
   });
 
   const handleChange = (e) => {
-    console.log("searching...")
     let { name, value } = e.target;
     setFilterValue({ ...filterValue, [name]: value });
   };
 
   const clear = (key) => {
-    console.log(key);
     setFilterValue({ ...filterValue, [key]: "" });
   };
 
@@ -40,7 +36,7 @@ export const useProducts = () => {
 
   const filterData = data
     ?.filter((product) => {
-      console.log("hjgfhsdgh")
+      
       const matchsSearch =
         !searchValue ||
         [product.title, product.category, product.brand, product.rating]

@@ -1,11 +1,7 @@
 import { NavLink } from "react-router";
-import { LogOut } from "lucide-react";
-import { useDispatch } from "react-redux";
-import { removeUser } from "../features/authSlice";
-import { toast } from "react-toastify";
+import { Box, LogOut, ShoppingCart } from "lucide-react";
 
 const Navbar = () => {
-  const dispatch = useDispatch();
   return (
     <div className="p-5 text-xl bg-zinc-900 flex justify-between items-center ">
       <div>
@@ -38,14 +34,10 @@ const Navbar = () => {
           About
         </NavLink>
       </div>
-      <div>
-        <button
-          onClick={() => {
-            dispatch(removeUser());
-            toast.success("User logged out successfully");
-          }}
-          className="p-1 rounded border border-zinc-700 bg-zinc-800 hover:bg-zinc-700 cursor-pointer "
-        >
+      <div className="flex gap-5 ">
+        <ShoppingCart />
+        <Box />
+        <button className="p-1 rounded border border-zinc-700 bg-zinc-800 hover:bg-zinc-700 cursor-pointer ">
           <LogOut size={22} className="text-red-600" />
         </button>
       </div>
