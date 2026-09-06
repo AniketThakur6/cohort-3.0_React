@@ -24,6 +24,7 @@ const ProductsPage = () => {
         search={search}
         setSearch={setSearch}
         setCategories={setCategories}
+        categories={categories}
       />
       <div className=" mt-10 grid grid-cols-5 gap-5 h-full w-full">
         {isPending || categoryPending
