@@ -240,20 +240,62 @@ This example is based on the concept explained in:
 
 This is a simple educational version. Real libraries like `react-window` or `@tanstack/virtual` handle more realistic cases such as dynamic item sizes, overscan, and edge cases.
 
-If:
+## React Virtuoso
 
-- `viewportHeight = 600`
-- `itemHeight = 40`
-- list length = 1,000,000
+React Virtuoso is a production-ready virtualized list component library for React.
 
-Then only around 15 to 20 items are rendered at a time, while the scroll container still behaves as though all 1,000,000 items exist.
+It helps you render large lists efficiently without writing the scrolling logic manually. Instead of calculating `slice()` ranges yourself, the library handles:
+
+- viewport tracking
+- scroll position updates
+- item measurement
+- dynamic rendering of visible rows
+- smooth scrolling behavior
+- better support for large, real-world lists
+
+### Example usage
+
+```jsx
+import { Virtuoso } from "react-virtuoso";
+
+const items = Array.from({ length: 100000 }, (_, i) => `Item ${i + 1}`);
+
+export default function App() {
+  return (
+    <Virtuoso
+      style={{ height: 600, width: 600 }}
+      totalCount={items.length}
+      itemContent={(index) => <div>{items[index]}</div>}
+    />
+  );
+}
+```
+
+### Why it is useful
+
+React Virtuoso is useful when:
+
+- you need a scalable list for thousands or millions of items
+- you want a cleaner API than custom manual virtualization
+- you want built-in support for more complex cases like dynamic heights and smooth scrolling
+
+### Difference from this custom example
+
+This project uses a custom hand-written virtualizer to teach the core idea.
+
+React Virtuoso is the same idea, but packaged as a reusable component with more robust behavior.
+
+| Approach              | Purpose                                            |
+| --------------------- | -------------------------------------------------- |
+| Custom virtualization | Learn how virtual scrolling works internally       |
+| React Virtuoso        | Use a ready-made production solution for real apps |
+
+### Official docs
+
+- [React Virtuoso Documentation](https://virtuoso.dev/)
 
 ## Reference
 
 This example is based on the concept explained in:
 
 - [Build your Own Virtual Scroll - Part I - DEV Community](https://dev.to/adamklein/build-your-own-virtual-scroll-part-i-11ib)
-
-## Notes
-
-This is a minimal custom implementation for learning purposes. Real-world libraries such as `react-window` and `react-virtualized` handle more edge cases like overscan, dynamic heights, and accessibility.
