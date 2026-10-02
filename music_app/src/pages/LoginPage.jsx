@@ -9,36 +9,54 @@ import {
   BarChart3,
 } from "lucide-react";
 import { useState } from "react";
+import { useAuth } from "../hooks/useAuth";
 
-const Input = ({ icon: Icon, placeholder, type = "text" }) => {
+const Input = ({ icon: Icon, placeholder, name, register,errors,regex,minLength, type = "text" }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const isPassword = type === "password";
 
   return (
-    <div className="flex h-10 items-center gap-2 rounded-md border border-[#2d2b31] bg-[#181719] px-3 transition focus-within:border-violet-500">
-      <Icon size={17} className="shrink-0 text-[#8d8798]" />
+    <div className="flex flex-col gap-1">
+      <div className="flex h-10 items-center gap-2 rounded-md border border-[#2d2b31] bg-[#181719] px-3 transition focus-within:border-violet-500">
+        <Icon size={17} className="shrink-0 text-[#8d8798]" />
 
-      <input
-        type={isPassword && showPassword ? "text" : type}
-        placeholder={placeholder}
-        className="h-full min-w-0 flex-1 bg-transparent text-sm text-white outline-none placeholder:text-[#706b77]"
-      />
+        <input
+          {...register(name,{
+            required:`${name} is required`,
+            ...(regex && {
+              pattern:{
+                value:regex,
+                message:`Inavlid ${name}`
+              }
+            }),
+            ...(minLength && {
+               minLength 
+            })
+          })}
+          type={isPassword && showPassword ? "text" : type}
+          placeholder={placeholder}
+          className="h-full min-w-0 flex-1 bg-transparent text-sm text-white outline-none placeholder:text-[#706b77]"
+        />
 
-      {isPassword && (
-        <button
-          type="button"
-          onClick={() => setShowPassword((prev) => !prev)}
-          className="text-[#77717f] transition hover:text-white"
-        >
-          {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
-        </button>
-      )}
+        {isPassword && (
+          <button
+            type="button"
+            onClick={() => setShowPassword((prev) => !prev)}
+            className="text-[#77717f] transition hover:text-white"
+          >
+            {showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
+          </button>
+        )}
+      </div>
+      { errors[name] && <p className="text-xs text-red-500">{errors[name].message}</p> }
     </div>
   );
 };
 
 const LoginPage = () => {
+  const { register, handleSubmit, errors,navigate, loginFormSubmit } = useAuth();
+
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#0d0d0e] text-white">
       {/* Decorative icons */}
@@ -51,14 +69,14 @@ const LoginPage = () => {
       <BarChart3
         size={25}
         strokeWidth={1.5}
-        className="absolute bottom-48 left-14 rotate-[-12deg] text-violet-500/30"
+        className="absolute bottom-48 left-14 -rotate-12 text-violet-500/30"
       />
 
       <div className="mx-auto flex min-h-screen max-w-6xl items-center justify-center px-6 py-10">
         <div className="grid w-full max-w-5xl grid-cols-1 items-center gap-16 md:grid-cols-2">
           {/* LEFT SIDE */}
           <section className="flex flex-col items-center text-center">
-            <div className="relative mb-8 w-full max-w-[330px] overflow-hidden">
+            <div className="relative mb-8 w-full max-w-82.5 overflow-hidden">
               <div className="absolute inset-0 bg-violet-500/10 blur-3xl" />
 
               <div className="relative flex aspect-[1.55] items-center justify-center bg-[#101012]">
@@ -68,7 +86,7 @@ const LoginPage = () => {
                   className="text-violet-400"
                 />
 
-                <div className="absolute inset-x-10 bottom-10 h-px bg-gradient-to-r from-transparent via-violet-500 to-transparent" />
+                <div className="absolute inset-x-10 bottom-10 h-px bg-linear-to-r from-transparent via-violet-500 to-transparent" />
 
                 <Music2
                   size={20}
@@ -94,7 +112,7 @@ const LoginPage = () => {
           </section>
 
           {/* RIGHT SIDE */}
-          <section className="w-full max-w-[335px] justify-self-center rounded-lg border border-[#242326] bg-[#181819] p-7 shadow-2xl md:justify-self-start">
+          <section className="w-full max-w-83.75 justify-self-center rounded-lg border border-[#242326] bg-[#181819] p-7 shadow-2xl md:justify-self-start">
             <div className="mb-7">
               <h2 className="text-xl font-bold tracking-tight">Welcome Back</h2>
 
@@ -109,7 +127,15 @@ const LoginPage = () => {
                 EMAIL ADDRESS
               </label>
 
-              <Input icon={Mail} placeholder="name@example.com" type="email" />
+              <Input 
+                icon={Mail} 
+                placeholder="name@example.com" 
+                type="email"
+                name="email"
+                register={register}
+                errors={errors}
+                regex={/^[^\s@]+@[^\s@]+\.[^\s@]+$/} 
+              />
             </div>
 
             {/* Password */}
@@ -124,6 +150,10 @@ const LoginPage = () => {
                 icon={LockKeyhole}
                 placeholder="Password"
                 type="password"
+                name="password"
+                register={register}
+                errors={errors}
+                minLength={{ value: 6, message: "password atleast 6 characters" }}
               />
             </div>
 
@@ -138,8 +168,9 @@ const LoginPage = () => {
 
             {/* Main action */}
             <button
-              type="button"
-              className="flex h-10 w-full items-center justify-center gap-2 rounded-md bg-gradient-to-r from-violet-500 to-violet-600 text-sm font-bold shadow-lg shadow-violet-500/20 transition hover:from-violet-400 hover:to-violet-500"
+              type="submit"
+              onClick={handleSubmit(loginFormSubmit)}  
+              className="flex h-10 w-full items-center justify-center gap-2 rounded-md bg-linear-to-r from-violet-500 to-violet-600 text-sm font-bold shadow-lg shadow-violet-500/20 transition hover:from-violet-400 hover:to-violet-500"
             >
               Continue
               <ArrowRight size={17} />
@@ -148,7 +179,9 @@ const LoginPage = () => {
             {/* Register only — no Login option */}
             <div className="mt-7 border-t border-[#28262b] pt-6 text-center text-xs text-[#8d8792]">
               Don't have an account?{" "}
-              <button className="ml-1 font-semibold text-violet-400 transition hover:text-violet-300">
+              <button 
+              onClick={()=> navigate('/register')}
+              className="ml-1 font-semibold text-violet-400 transition hover:text-violet-300">
                 Register
               </button>
             </div>

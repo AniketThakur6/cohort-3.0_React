@@ -40,12 +40,8 @@ const AppRoute = () => {
           element: <MainLayout />,
           children: [
             {
-              path: "",
-              element: <HomePage />,
-            },
-            {
-              path:"artist-dashboard",
-              element: <ArtistDashBoard />
+              path:"",
+              element:<HomePage />
             }
           ],
         },

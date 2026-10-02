@@ -1,10 +1,12 @@
-import React, { createContext } from 'react'
+import React, { createContext, useState } from 'react'
 
 export const AuthContext = createContext()
 
 const AuthProvider = ({children}) => {
   
-  const registerUser = ["hello"];
+  const [registerUser, setRegisterUser] = useState(JSON.parse(localStorage.getItem("registerUser")) ||  [])
+
+  const [loggedIn, setLoggedIn] = useState(JSON.parse(localStorage.getItem("currentUser")) || null)
 
   const saveLocal = ({name,data})=>{
     localStorage.setItem(name,JSON.stringify(data));
@@ -14,7 +16,10 @@ const AuthProvider = ({children}) => {
     <AuthContext.Provider
       value={{
         saveLocal,
-        registerUser
+        registerUser,
+        setRegisterUser,
+        loggedIn,
+        setLoggedIn,
       }}
     >
       {children}

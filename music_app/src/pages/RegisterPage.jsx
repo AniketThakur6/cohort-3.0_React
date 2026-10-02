@@ -12,11 +12,8 @@ import {
   Eye,
   EyeOff,
 } from "lucide-react";
-import React, { useContext, useState } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from 'react-toastify';
-import { AuthContext } from "../context/AuthContext";
-import Register from './../../../state-uplift/src/components/Register';
+import React, { useState } from "react";
+import { useAuth } from "../hooks/useAuth";
 
 const Input = ({
   icon: Icon,
@@ -26,9 +23,11 @@ const Input = ({
   register,
   errors,
   validate,
+  deps,
+  regex,
+  minLength,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
-  
 
   const isPassword = type === "password";
 
@@ -40,10 +39,16 @@ const Input = ({
         <input
           {...register(name, {
             required: `${name} is required`,
-            minLength:{
-              value:6,
-              message:"password at least 6 character"
-            },
+            ...(deps && { deps }),
+            ...(minLength && {
+              minLength,
+            }),
+            ...(regex && {
+              pattern: {
+                value: regex,
+                message: `Invalid ${name}`,
+              },
+            }),
             ...(validate && {
               validate,
             }),
@@ -72,47 +77,20 @@ const Input = ({
 };
 
 const RegisterPage = () => {
+  console.log("rerending....");
 
-  const {registerUser} = useContext(AuthContext)
-
-  const [role, setRole] = useState("listener");
-  const [isChecked, setIsChecked] = useState(false);
   const {
-    register,
+    setRole,
+    role,
+    isChecked,
+    setIsChecked,
+    registerFormSubmit,
     handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm({
-    mode: "onChange",
-  });
-
-  const registerFormSubmit = (data) => {
-    
-    if(!isChecked){
-      toast.error("Please accept the Terms of Service and Privacy Policy")
-      return ;
-    }
-
-    const isUserAlreadyExists = register.find(user => user.email === data.email)
-
-    if(!isUserAlreadyExists){
-      toast.error("User Already Exist with email address ")
-      return;
-    }
-
-    const obj = {
-      email: data.email,
-      username: data.username,
-      name: data.name,
-      password: data.password,
-      joinedAt: new Date.now().toLocaleString()
-    }
-
-    registerUser = [...registerUser,obj]
-
-   
-
-  };
+    getValues,
+    errors,
+    navigate,
+    register,
+  } = useAuth();
 
   return (
     <div className="min-h-screen overflow-hidden bg-[radial-gradient(circle_at_50%_25%,#21152f_0%,#15121b_35%,#0d0d0f_75%)] text-white">
@@ -128,13 +106,13 @@ const RegisterPage = () => {
       </div>
 
       {/* Card */}
-      <div className="mx-auto mt-8 w-[412px] rounded-lg bg-[#1c1b1e] p-8 shadow-2xl shadow-black/30">
+      <div className="mx-auto mt-8 w-103 rounded-lg bg-[#1c1b1e] p-8 shadow-2xl shadow-black/30">
         {/* Account type */}
         <div className="mb-5 grid grid-cols-2 gap-3">
           <button
             type="button"
             onClick={() => setRole("listener")}
-            className={`flex h-[84px] flex-col items-center justify-center rounded-md ${
+            className={`flex h-21 flex-col items-center justify-center rounded-md ${
               role === "listener"
                 ? "border border-violet-500 bg-[#2a243b] text-[#ddd0ff] shadow-[0_0_15px_rgba(139,92,246,0.12)]"
                 : "border border-[#39363e] bg-[#1b1a1c] text-[#aaa5af] transition hover:border-violet-500"
@@ -150,7 +128,7 @@ const RegisterPage = () => {
           <button
             type="button"
             onClick={() => setRole("artist")}
-            className={`flex h-[84px] flex-col items-center justify-center rounded-md ${
+            className={`flex h-21 flex-col items-center justify-center rounded-md ${
               role === "artist"
                 ? "border border-violet-500 bg-[#2a243b] text-[#ddd0ff] shadow-[0_0_15px_rgba(139,92,246,0.12)]"
                 : "border border-[#39363e] bg-[#1b1a1c] text-[#aaa5af] transition hover:border-violet-500"
@@ -204,8 +182,10 @@ const RegisterPage = () => {
               placeholder="Password"
               type="password"
               name="password"
+              deps="confirmPassword"
               register={register}
               errors={errors}
+              minLength={{ value: 6, message: "password atleast 6 characters" }}
             />
 
             <Input
@@ -215,8 +195,9 @@ const RegisterPage = () => {
               name="confirmPassword"
               register={register}
               errors={errors}
+              minLength={{ value: 6, message: "password atleast 6 characters" }}
               validate={(value) =>
-                value === watch("password") || "Passwords do not match"
+                value === getValues("password") || "Passwords do not match"
               }
             />
           </div>
@@ -230,7 +211,7 @@ const RegisterPage = () => {
               className="mt-1 h-3 w-3 accent-violet-500"
             />
 
-            <span className="text-xs font-semibold leading-[14px] tracking-wide text-[#c4bacf]">
+            <span className="text-xs font-semibold leading-3.5 tracking-wide text-[#c4bacf]">
               I agree to the Terms of Service and
               <br />
               Privacy Policy.
@@ -240,7 +221,7 @@ const RegisterPage = () => {
           {/* Register */}
           <button
             type="submit"
-            className="mt-3 flex h-12 w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#cbb5ff] to-[#7338df] text-sm font-bold text-[#38205f] shadow-[0_8px_20px_rgba(124,58,237,0.25)] transition hover:brightness-110 active:scale-[0.99]"
+            className="mt-3 flex h-12 w-full items-center justify-center gap-2 rounded-full bg-linear-to-r from-[#cbb5ff] to-[#7338df] text-sm font-bold text-[#38205f] shadow-[0_8px_20px_rgba(124,58,237,0.25)] transition hover:brightness-110 active:scale-[0.99]"
           >
             Register
             <ArrowRight size={17} />
@@ -250,8 +231,10 @@ const RegisterPage = () => {
         {/* Login */}
         <p className="mt-5 text-center text-xs text-[#b8b1bd]">
           Already have an account?
-
-          <button className="ml-1 font-bold text-[#a981ff] hover:text-[#c1a5ff]">
+          <button
+            onClick={() => navigate("/")}
+            className="ml-1 font-bold text-[#a981ff] hover:text-[#c1a5ff]"
+          >
             Login
           </button>
         </p>
