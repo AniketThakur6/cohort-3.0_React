@@ -4,6 +4,7 @@ import Loadingskeleton from "@/components/Loadingskeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import WeatherDetails from "@/components/WeatherDetails";
+import WeatherForecast from "@/components/WeatherForecast";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { useForecastQuery, useReverseGeocodeQuery, useWeatherQuery } from "@/hooks/useWeather";
 import { AlertCircleIcon, MapPin, RefreshCw } from "lucide-react";
@@ -19,8 +20,6 @@ const WeatherDashboard = () => {
   const locationQuery = useReverseGeocodeQuery(coordinates);
   const forcastQuery = useForecastQuery(coordinates);
   const weatherQuery = useWeatherQuery(coordinates);
-
-  console.log("render...")
 
   const handleRefresh = () => {
     getLocation();
@@ -102,14 +101,16 @@ const WeatherDashboard = () => {
       </div>
 
       <div className="grid gap-6">
-        <div className="flex flex-col lg:flex-row gap-4">
+        <div className="flex flex-col lg:flex-row gap-4 mx-4">
           {/* current weather and hourly temperature */}
           <CurrentWeather data={weatherQuery.data} locationName={locationName} />
 
           <HourlyTemperature data={forcastQuery.data} />
         </div>
-        <div>{/* details and forecast */}
+        <div className="grid gap-6 md:grid-cols-2 items-start mx-4">{/* details and forecast */}
           <WeatherDetails  data={weatherQuery.data}/>
+
+          <WeatherForecast data={forcastQuery.data}/>
         </div>
       </div>
     </div>

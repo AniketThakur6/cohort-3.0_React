@@ -2,7 +2,6 @@ import type { ForecastData } from "@/apis/types";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { ResponsiveContainer, Line, LineChart, XAxis, YAxis, Tooltip } from "recharts";
 import { format } from "date-fns";
-import { Divide } from "lucide-react";
 
 interface HourlyTemperatureProps {
   data: ForecastData;
@@ -22,7 +21,7 @@ const HourlyTemperature = ({ data }: HourlyTemperatureProps) => {
   }));
 
   return (
-    <Card className="flex-1 mx-4 lg:mr-4 lg:ml-0">
+    <Card className="flex-1">
       <CardHeader>
         <CardTitle>Today's Temperature</CardTitle>
       </CardHeader>
