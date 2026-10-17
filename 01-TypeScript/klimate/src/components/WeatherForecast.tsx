@@ -1,7 +1,7 @@
 import type { ForecastData } from "@/apis/types";
 import { format } from "date-fns";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { ArrowBigDown, ArrowDown, ArrowUp, Droplets, Wind } from "lucide-react";
+import { ArrowDown, ArrowUp, Droplets, Wind } from "lucide-react";
 
 interface WeatherForecastProps {
   data: ForecastData;

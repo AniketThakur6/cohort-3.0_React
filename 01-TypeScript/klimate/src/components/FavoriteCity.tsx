@@ -1,5 +1,5 @@
 import { useFavorite } from "@/hooks/useFavorites";
-import { ScrollArea } from "./ui/scroll-area";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useNavigate } from "react-router";
 import { useWeatherQuery } from "@/hooks/useWeather";
 import { Button } from "@/components/ui/button";
@@ -26,7 +26,7 @@ const FavoriteCity = () => {
       <h1 className="text-xl font-bold tracking-tight">Favorites</h1>
       <ScrollArea className="w-full pb-4">
         <div className="flex gap-4">
-          {favorites.map((city) => {
+          {favorites.map((city:FavoriteCityTabletProps) => {
             return (
               <FavoriteCityTablet
                 key={city.id}
@@ -36,6 +36,7 @@ const FavoriteCity = () => {
             );
           })}
         </div>
+        <ScrollBar orientation="horizontal" className="mt-2" />
       </ScrollArea>
     </>
   );
